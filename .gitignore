@@ -9,7 +9,6 @@ migrations
 *.jp*g
 chromedriver
 geckodriver
-*.pgsql
 *.csv
 tel_scr.png
 tel.gif
