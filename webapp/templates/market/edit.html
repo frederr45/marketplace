@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form action='{{  url_for("market.edit_auto", id=auto.id)  }}' method='POST' enctype='multipart/form-data'> 
+        <div class="modal-body">
+          {{ editform.hidden_tag() }}
+            <div class="form-group" >
+               Марка: {{ auto.params.brand }}
+            </div>
+            <div class="form-group">
+                Модель: {{ auto.params.model }} 
+            </div>
+            <div class="form-group">
+                Год: {{ auto.params.year }}
+            </div>
+            <div class="form-group">
+                {{ editform.mileage.label }} 
+                {{ editform.mileage(placeholder=auto.params.mileage) }}
+            </div>
+            <div class="form-group">
+                {{ editform.price.label }}
+                {{ editform.price(placeholder=auto.price) }}
+            </div>
+            <div class="form-group">
+                {{ editform.description.label }}
+                {{ editform.description() }}
+            </div>
+            <div class="form-group">
+                {{ editform.url_picture.label }}
+                {{ editform.url_picture() }}
+            </div>
+            
+                
+        </div>
+        <div class="row">
+            {% for img in auto.images %}
+            <div class="box" style="width:100px; height:100px; float:left; ">
+                <img style="max-width: 75%; max-height: 90%" src='{{ url_for("img.send_picture", filename=img.url_picture ) }}' class="d-block w-100" alt="...">
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="modal-footer">
+          <div class="form-group">
+              <a href="{{ url_for('market.auto_account', id=auto.id) }}"><button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button></a>
+                {{ editform.submit() }}
+          </div>
+        </div>
+      </form>
+{% endblock content %}

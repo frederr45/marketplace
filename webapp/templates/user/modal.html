@@ -1,0 +1,64 @@
+{% if not current_user.is_authenticated %}
+<div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="LoginModal">Авторизация</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action='{{  url_for("user.process_login") }}' method='POST'>
+                <div class="modal-body">
+                {{ form.hidden_tag() }}
+                    <div class="form-group">
+                    {{ form.mail.label }}
+                    {{ form.mail() }}
+                    </div>
+                    <div class="form-group">          
+                        {{ form.password.label }}
+                        {{ form.password() }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group form-check">
+                        {{ form.remember_me() }}
+                        {{ form.remember_me.label(class_='form-check-label') }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.submit() }}
+                    </div>
+                    <p>
+                        Forgot Your Password?
+                        <a href="/reset_password_request">Reset It</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="modal fade" id="LogoutModal" tabindex="-1" role="form" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="LogoutModal">Выход</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action='{{  url_for("user.logout") }}' method='POST'>
+        <div class="modal-body">
+          Вы действительно хотите выйти?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Остаться</button>
+          {{ logoutform.choice_yes() }}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+

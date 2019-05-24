@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block account %}
+<div class="col-2 border-right" style="padding-top:10px">
+    <ul class="nav nav-pills">
+        <li class="nav-item ">
+            <a class="nav-link " href="/">На главную</a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link " href="{{ url_for('user.user_account', id=current_user.id) }}">Аккаунт</a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link active" style="background-color:rgb(128, 69, 170)" href="{{ url_for('message.messages') }}">Сообщения</a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" href="#">Настройки</a>
+        </li>
+    </ul>
+</div>
+<div class="col-10">
+    <div class="row"><h1>Сообщения</h1></div>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link "  href="{{ url_for('message.messages') }}">Полученные</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" style="background-color:#20c997" href="{{ url_for('message.sent_messages') }}">Отправленные</a>
+        </li>
+    </ul>
+    <div class="col" style=" padding-top: 20px">
+        {% if sent_msg == [] %}
+        <div class="container" style="padding-bottom:20px">
+            <i> Вы не написали еще ни одного сообщения </i>
+        </div>
+        {% else %}
+            {% for message in sent_msg %}
+                <div class="container border border-info">
+                    <p>
+                        Получатель: 
+                        <a href="{{ url_for('user.user_account', id=message.recipient.id) }}">
+                        {{ message.recipient.name }}
+                        </a>
+                        <br> Сообщение: <b>{{ message.body }}</b> <br>в: {{ message.timestamp }}
+                    </p>
+                </div>
+            {% endfor %}
+            <div class="row" style="padding-bottom: 20px; padding-top: 20px; margin-left: 30%">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item previous{% if not prev_url %} disabled{% endif %}">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item next{% if not next_url %} disabled{% endif %}">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

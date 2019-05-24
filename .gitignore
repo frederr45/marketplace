@@ -1,0 +1,15 @@
+*.log
+evn
+venv
+.vscode
+__pycache__
+config.py
+migrations
+*.json
+*.jp*g
+chromedriver
+geckodriver
+*.pgsql
+*.csv
+tel_scr.png
+tel.gif

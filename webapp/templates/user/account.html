@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block account %}
+<div class="col-2 border-right" style="padding-top:10px">
+        <ul class="nav nav-pills">
+            <li class="nav-item ">
+                <a class="nav-link "  href="/">На главную</a>
+            </li>
+        {% if current_user.id == user.id %}
+        <li class="nav-item" >
+            <a class="nav-link active " style="background-color:rgb(128, 69, 170)" href="{{ url_for('user.user_account', id=current_user.id) }}">Аккаунт</a>
+        </li>
+        {% else %}
+        <li class="nav-item ">
+            <a class="nav-link disabled " style="background-color:rgb(128, 69, 170)" href="{{ url_for('user.user_account', id=current_user.id) }}"> Аккаунт</a>
+        </li>
+        {% endif %}
+        <li class="nav-item ">
+            <a class="nav-link " href="{{ url_for('message.messages') }}">Сообщения</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " href="#">Настройки</a>
+        </li>
+    </ul>
+</div>
+
+<div class="col-10">
+    <div class="row">
+        <div class="col-3">PROFILE PHOTO<br>{{ user.avatar }}</div>
+        <div class="col-9">
+            ABOUT OF USER AND SETTINGS?!<br>
+            <div class="row">
+                <div class="box">
+                   <b>{{ user.name }}</b>
+                   <p>{{ user.street_address }}</p>  
+                </div>
+                
+            </div>
+            <div class="row">
+                {% if current_user.id == user.id %}
+                    <div class="col-9">
+                        {% if user.auto == [] %}
+                            <i>Нет размещенных объявлений</i>
+                        {% else %}
+                            {% for aut in user.auto %}
+                            <a href="{{ url_for('market.auto_account', id=aut.id) }}">
+                            <div class="media">
+                                <img src='{{ url_for("img.send_picture", filename=aut.images[0].url_picture) }}' class="rounded-sm" alt="..." style="height: 50px;"/>
+                                <div class="media-body">
+                                <h5 class="mt-0">{{ aut.name }}</h5>
+                                    {{ aut.price }}
+                                </div>
+                            </div> 
+                            </a>
+                            {% endfor%}
+                        {% endif %}
+                </div>
+                <div class="col-3">
+                    <a class="text-dark" href="{{ url_for('market.add_auto') }}">Разместить объявление</a>
+                </div>
+            </div>
+                {% else %}
+                <div class="col-9">
+                    {% if user.auto == None %}
+                       <i>Нет размещенных объявлений</i>
+                   {% else %}
+                       <i>Объявления пользователя:</i>
+                        {% for aut in user.auto %}
+                        <a href="{{ url_for('market.auto_account', id=aut.id) }}">
+                        <div class="media">
+                            <img src='{{ url_for("img.send_picture", filename=aut.images[0].url_picture) }}' class="rounded-sm" alt="..." style="height: 50px;"/>
+                            <div class="media-body">
+                            <h5 class="mt-0">{{ aut.name }}</h5>
+                                {{ aut.price }}
+                            </div>
+                        </div> 
+                        </a>
+                        {% endfor%}
+                    {% endif %}
+                </div>
+                <div class="col-3">
+                    <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#MessageModal">
+                        Написать сообщение        
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+{% include 'message/modal.html' %}
+{% endblock account %}

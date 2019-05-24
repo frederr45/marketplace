@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>{{ page_title }}</title>
+  </head>
+  <body style="min-width: 1200px; ">
+    <header  style="background-color: rgb(243, 243, 243);">
+      <div class="container" style="min-width:1200px">
+        {% include 'market/header.html' %}
+      </div>
+    </header>
+    
+    <main style="padding-top: 100px">
+      <div class="container" style="min-width:1200px">
+        {% include 'market/flash.html' %}
+        <div class="row">
+          {% block account %}
+          {% endblock account %}
+          {% block auto_content %}
+          {% endblock auto_content %}
+          <div class="col-2"></div>
+          <div class="col-10">
+            {% block content %}
+      
+            {% endblock content %}
+            {% if next_url or prev_url %}
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-end">
+                {% if prev_url %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ prev_url }}">Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                  <a class="page-link" href="{{ prev_url }}" tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
+                {% endif %}
+                
+                {% if next_url %}
+                <li class="page-item">
+                  <a class="page-link" href="{{ next_url }}">Next</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                  <a class="page-link" href="{{ next_url }}" tabindex="-1" aria-disabled="true">Next</a>
+                </li>
+                {% endif %}
+              </ul>
+            </nav>
+            {% endif %}
+            
+          </div>
+          
+        </div>
+      </div>
+    </main>
+    <footer style="background-color : rgb(236, 225, 240)">
+      {% include 'market/footer.html' %}
+    </footer>
+
+
+      {% include 'user/modal.html' %}      
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

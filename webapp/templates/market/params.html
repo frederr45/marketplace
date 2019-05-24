@@ -1,0 +1,7 @@
+<ul>
+    {% for t in all_params.items() %}
+    {% if t[1] != None %}
+        <li>{{ t[0] }}  :  {{ t[1] }}</li>
+    {% endif %}
+    {% endfor %}
+</ul>

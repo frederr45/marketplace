@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% for brand in brands %}
+<div class="row border-bottom">
+
+Все что нашли по вашему запросу:                        
+<a href="{{ url_for('market.filter_brand', brand=brand.id ) }}">
+    <i>               {{ brand.name }}</i><br>
+</a>    
+</div>
+<span class="border-bottom">
+{% for model in models %}
+    <a href="{{ url_for('market.filter_model', brand=brand.id, model=model.id ) }}">
+        {{ model.name }}
+    </a>
+    <span class="badge badge-pill">{{ count[model.name] }} |</span>
+    {% endfor %}
+    {% endfor %}
+</span>
+{% if auto_list == [] %}
+<p>
+    <h4>По интересующей Вас модели нет ни одного объявления..</h4>
+</p>
+    
+{% else %}
+{% for auto in auto_list %}  
+    {% if auto.active !=False %}
+        <div class="row" >
+            <div class="media" style="margin-bottom:15px; margin-top: 10px">
+                <div class="col" style="min-width: 300px; ">
+                    <a href="{{ url_for('market.auto_account', id=auto.id) }}">
+                        <img class="rounded" style="width: 70%;" src='{{ url_for("img.send_picture", filename=auto.images[0].url_picture) }}'  alt="{{ auto.name }}"></a>
+                    </a>
+                </div>
+                <div class="col-9">
+                    <div class="row">
+                        <div class="col-6" style="min-width:300px">
+                            <div class="media-body">
+                                <a href="{{ url_for('market.auto_account', id=auto.id) }}"><h5 class="mt-0">{{ auto.name }}</h5></a>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <span class="badge badge-pill badge-light">
+                                <h5>Цена: {{ auto.price }} </h5>
+                                {{ auto.params.model }}
+                            </span><br/>
+                            <div class="btn-group dropleft" >
+                                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Подробнее
+                                </button>
+                                <div class="dropdown-menu" style="width: 400px; padding: 10px">
+                                    {% if auto.description != None %}
+                                        {{ auto.description[:100] }}...
+                                        <a href="{{ url_for('market.auto_account', id=auto.id) }}">Смотреть</a>
+                                    {% else %}
+                                        <a href="{{ url_for('market.auto_account', id=auto.id) }}">Смотреть</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}   
+{% endfor %}
+{% endif %}
+
+{% endblock content %} 

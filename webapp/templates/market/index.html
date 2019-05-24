@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Отфильтровать по цене
+</button><br/>
+  
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Отфильтровать по цене</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action='{{ url_for("market.find") }}' method='POST'> 
+                <div class="modal-body">
+            
+                    <div class="form-group">
+                        {{ fform.price_1.label }}
+                        {{ fform.price_1() }}
+                    </div>
+                    <div class="form-group">
+                        {{ fform.price_2.label }}
+                        {{ fform.price_2() }}
+                    </div>
+            
+        
+                </div>
+                
+                <div class="modal-footer">
+                    <div class="form-group">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    {{ fform.submit() }}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+На сайте {{ full_auto_list|length }} активных объявления.<br/>
+
+{% for brand in brands %}
+    <a href="{{ url_for('market.filter_brand', brand=brand.id ) }}">
+         {{ brand.name }}
+    </a>
+    <span class="badge badge-pill"> {{ count[brand.name] }}   </span>  
+
+{% endfor %}
+{% if auto_list != [] %}
+{% for auto in auto_list %}  
+    {% if auto.active !=False %}
+        <div class="row" >
+            <div class="media" style="margin-bottom:15px; margin-top: 10px">
+                <div class="col" style="min-width: 300px; ">
+                    <a href="{{ url_for('market.auto_account', id=auto.id) }}">
+                        <img class="rounded" style="width: 70%;" src='{{ url_for("img.send_picture", filename=auto.images[0].url_picture) }}'  alt="{{ auto.name }}"></a>
+                    </a>
+                </div>
+                <div class="col-9">
+                    <div class="row">
+                        <div class="col-6" style="min-width:300px">
+                            <div class="media-body">
+                                <a href="{{ url_for('market.auto_account', id=auto.id) }}"><h5 class="mt-0">{{ auto.name }}</h5></a>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <span class="badge badge-pill badge-light">
+                                <h5>Цена: {{ auto.price }} </h5>
+                                
+                            </span><br/>
+                            <div class="btn-group dropleft" >
+                                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Подробнее
+                                </button>
+                                <div class="dropdown-menu" style="width: 400px; padding: 10px">
+                                    {% if auto.description != None %}
+                                        {{ auto.description[:100] }}...
+                                        <a href="{{ url_for('market.auto_account', id=auto.id) }}">Смотреть</a>
+                                    {% else %}
+                                        <a href="{{ url_for('market.auto_account', id=auto.id) }}">Смотреть</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}   
+{% endfor %}
+{% else %}
+<h4>Ничего не найдено ..:(</h4>
+{% endif %}
+
+  
+{% endblock content %} 

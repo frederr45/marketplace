@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block auto_content %}
+<div class="modal fade" id="DelModal" tabindex="-1" role="form" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="DelModal">Удалить объявление?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action='{{  url_for("market.del_auto", id=auto.id ) }}' method='POST'>
+          <div class="modal-body">
+            Вы действительно хотите снять обьявление с продажи?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            
+            {{ delform.choice_yes() }}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div> 
+        <div class="col-1" style="background:rgb(229, 241, 241)"></div>
+        <div class="col-7">
+            <h3>{{ auto.name }}</h3>
+            {% if auto.user_id == current_user.id %}
+            <button type="button" class="btn btn-link"><a href='{{ url_for("market.edit_auto", id=auto.id) }}'>Редактировать</a></button>
+            {% endif %}
+        {% if current_user.is_admin == current_user.id or auto.user_id == current_user.id %}
+            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#DelModal">Удалить</button>
+        {% endif %}
+            <div class="box" style="max-height: 600px; max-width: 600px">
+                <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
+                    <div class="carousel-inner" style="max-width: 800px; max-height: 600px">
+                        <div class="carousel-item active">
+                            <img src='{{ url_for("img.send_picture", filename=auto.images[0].url_picture ) }}' class="d-block w-100" alt="{{ img }}">
+                        </div>
+                            {% for img in auto.images[1:] %}
+                            
+                                <div class="carousel-item">
+                                    <img src='{{ url_for("img.send_picture", filename=img.url_picture ) }}' class="d-block w-100" alt="...">
+                                </div>
+                            {% endfor %}
+                        <a class="carousel-control-prev" href="#carouselExampleFade" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleFade" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div> 
+            </div>
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist" style="padding-top:10px">
+                    <a class="nav-item nav-link active" id="nav-description-tab" data-toggle="tab" href="#nav-description" role="tab" aria-controls="nav-description" aria-selected="true" >Описание</a>
+                    <a class="nav-item nav-link" id="nav-params-tab" data-toggle="tab" href="#nav-params" role="tab" aria-controls="nav-params" aria-selected="false">Характеристики</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent" >
+                <div class="tab-pane fade show active" id="nav-description" role="tabpanel" aria-labelledby="nav-description-tab">
+                    <div class="row" style="margin: 15px">
+                        {{ auto.description }}
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="nav-params" role="tabpanel" aria-labelledby="nav-params-tab" >
+                    <div class="row" style="margin: 15px">
+                        {% include 'market/params.html' %}
+                    </div>
+                    <div class="row">
+                        <div class="col-9"></div>
+                        <div class="col-3">#{{ auto.id }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4" style="background:rgb(245, 245, 245); height: 400px">
+            <div class="row"><h4> {{ auto.price }} Р  </h4></div>
+            <div class="box" >
+                <div class="row" >
+                    <div class="box" >
+                    {% if current_user.is_authenticated %}
+                        <a class="nav-link" href="{{ url_for('user.user_account', id=user.id) }}">
+                            {{ user.avatar }}
+                        <p><h6>{{ user.name }}</h6></p>
+                        </a>
+                        <p> {{ user.number }}</p>
+                        {% if user.id != current_user.id %}
+                            <p>
+                                <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#MessageModal">
+                                    Написать сообщение
+                                </button>
+                            </p>
+                        {% else %}
+                            <a class="nav-link" href="{{ url_for('user.user_account', id=user.id) }}">Мой аккаунт</a>
+                        {% endif %}
+                    {% else %}
+                        {{ user.avatar }}
+                        <p><h6>{{ user.name }}</h6></p>
+                       
+                            <p>
+                                Для того чтобы увидеть номер <br>или написать продавцу Вам <br> нужно
+                                <button type="button" class="btn btn-outline-dark btn-sm" style="color:rgb(150, 140, 140)" data-toggle="modal" data-target="#LoginModal">войти</button>
+                                или
+                                <a href= "/registration"><button type="button" class="btn btn-outline-dark btn-sm" style="color:rgb(150, 140, 140)" >зарегистрироваться</button></a>
+                            </p>
+                        
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% include 'message/modal.html' %}
+</div>
+{% endblock auto_content %}

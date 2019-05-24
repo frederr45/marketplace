@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form action='{{  url_for("market.process_add")  }}' method='POST' enctype='multipart/form-data'> 
+        <div class="modal-body">
+          {{ addform.hidden_tag() }}
+            <div class="form-group">
+                {{ addform.brand.label }}
+                {{ addform.brand() }}
+            </div>
+            <div class="form-group">
+                {{ addform.model.label }}
+                {{ addform.model() }}
+            </div>
+            <div class="form-group">
+                {{ addform.year.label }}
+                {{ addform.year() }}
+            </div>
+            <div class="form-group">
+                {{ addform.mileage.label }}
+                {{ addform.mileage() }}
+            </div>
+            <div class="form-group">
+                {{ addform.price.label }}
+                {{ addform.price() }}
+            </div>
+            <div class="form-group">
+                {{ addform.holders.label }}
+                {{ addform.holders() }}
+            </div>
+            <div class="form-group">
+                {{ addform.condition.label }}
+                {{ addform.condition() }}
+            </div>
+            <div class="form-group">
+                {{ addform.steering_wheel.label }}
+                {{ addform.steering_wheel() }}
+            </div>
+            <div class="form-group">
+                {{ addform.wheeldrive.label }}
+                {{ addform.wheeldrive() }}
+            </div>
+            <div class="form-group">
+                {{ addform.color.label }}
+                {{ addform.color() }}
+            </div>
+            <div class="form-group">
+                {{ addform.body_type.label }}
+                {{ addform.body_type() }}
+            </div>
+            <div class="form-group">
+                {{ addform.type_engine.label }}
+                {{ addform.type_engine() }}
+            </div>
+            <div class="form-group">
+                {{ addform.gear.label }}
+                {{ addform.gear() }}
+            </div>
+            <div class="form-group">
+                {{ addform.description.label }}
+                {{ addform.description() }}
+            </div>
+            <div class="form-group">
+                {{ addform.url_picture.label }}
+                {{ addform.url_picture() }}
+            </div>
+        </div>
+        <div class="modal-footer">
+          <div class="form-group">
+            {{ addform.submit() }}
+          </div>
+        </div>
+      </form>
+      <script>
+          let brand_select = document.getElementById('brand');
+          let model_select = document.getElementById('model');
+
+          brand_select.onchange = function() {
+              brand = brand_select.value;
+              
+              fetch('/auto/' + brand).then(function(response) {
+
+                response.json().then(function(data) {
+                    let optionHTML = '';
+
+                    for (let model of data.models) {
+                        optionHTML += '<option value="' + model.id + '">' + model.name + '</option>';
+                    }
+
+                    model_select.innerHTML = optionHTML;
+                });
+              });
+          }
+          
+      </script>
+{% endblock content %}
