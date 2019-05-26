@@ -1,55 +1,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-    Отфильтровать по цене
-</button><br/>
-  
+<div class="col-2">
+    <form action='{{ url_for("market.find") }}' method='POST'> 
+        <div class="modal-body">
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Отфильтровать по цене</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div class="form-group">
+                {{ fform.price_1.label }}
+                {{ fform.price_1() }}
             </div>
-            <form action='{{ url_for("market.find") }}' method='POST'> 
-                <div class="modal-body">
-            
-                    <div class="form-group">
-                        {{ fform.price_1.label }}
-                        {{ fform.price_1() }}
-                    </div>
-                    <div class="form-group">
-                        {{ fform.price_2.label }}
-                        {{ fform.price_2() }}
-                    </div>
-            
-        
-                </div>
-                
-                <div class="modal-footer">
-                    <div class="form-group">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    {{ fform.submit() }}
-                    </div>
-                </div>
-            </form>
+            <div class="form-group">
+                {{ fform.price_2.label }}
+                {{ fform.price_2() }}
+            </div>
         </div>
-    </div>
+        
+        <div class="modal-footer">
+            <div class="form-group">
+            {{ fform.submit() }}
+            </div>
+        </div>
+    </form>  
 </div>
 
 
-На сайте {{ full_auto_list|length }} активных объявления.<br/>
+<div class="col-10">
+    На сайте {{ full_auto_list|length }} активных объявления.<br/>
 
 {% for brand in brands %}
+{% if count[brand.name] == 0 %}
+
+        {{ brand.name }}
+   
+   <span class="badge" style="color: rgb(165, 165, 165)"><i>( {{ count[brand.name] }}   )</i></span> 
+{% else %}
     <a href="{{ url_for('market.filter_brand', brand=brand.id ) }}">
          {{ brand.name }}
     </a>
-    <span class="badge badge-pill"> {{ count[brand.name] }}   </span>  
-
+    <span class="badge" style="color: rgb(165, 165, 165)"><i>( {{ count[brand.name] }}   )</i></span>  
+{% endif %}
 {% endfor %}
 {% if auto_list != [] %}
 {% for auto in auto_list %}  
@@ -96,6 +85,8 @@
 {% else %}
 <h4>Ничего не найдено ..:(</h4>
 {% endif %}
+</div>
+
 
   
 {% endblock content %} 

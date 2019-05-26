@@ -2,22 +2,33 @@
 
 {% block content %}
 {% for brand in brands %}
-<div class="row border-bottom">
 
-Все что нашли по вашему запросу:                        
-<a href="{{ url_for('market.filter_brand', brand=brand.id ) }}">
-    <i>               {{ brand.name }}</i><br>
-</a>    
-</div>
-<span class="border-bottom">
+
+   <h5> Все что нашли по вашему запросу:                            
+    <a href="{{ url_for('market.filter_brand', brand=brand.id ) }}">
+        <i>    {{ brand.name }}</i><br/>
+    </a>    
+    </h5>
+<div class="row">
+   <span class="border-bottom">
 {% for model in models %}
-    <a href="{{ url_for('market.filter_model', brand=brand.id, model=model.id ) }}">
+    {% if count[model.name] == 0 %}
+    
         {{ model.name }}
-    </a>
-    <span class="badge badge-pill">{{ count[model.name] }} |</span>
+    
+    <span class="badge" style="color: rgb(165, 165, 165)"><i>( {{ count[model.name] }}   )</i></span> 
+
+    {% else %}
+        <a href="{{ url_for('market.filter_model', brand=brand.id, model=model.id ) }}" >
+            {{ model.name }}
+        </a>
+        <span class="badge" style="color: rgb(165, 165, 165)"><i>( {{ count[model.name] }}   )</i></span>
+    {% endif %}
     {% endfor %}
     {% endfor %}
-</span>
+</span> 
+</div>
+
 {% if auto_list == [] %}
 <p>
     <h4>По интересующей Вас модели нет ни одного объявления..</h4>
@@ -43,7 +54,7 @@
                         <div class="col-4">
                             <span class="badge badge-pill badge-light">
                                 <h5>Цена: {{ auto.price }} </h5>
-                                {{ auto.params.model }}
+                                
                             </span><br/>
                             <div class="btn-group dropleft" >
                                 <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

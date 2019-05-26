@@ -28,6 +28,7 @@
             </div>
             {% endif %}
                 {% if current_user.is_authenticated %}
+                <a class="text-dark" href="{{ url_for('market.add_auto') }}">Разместить объявление</a>
                 <button type="button" class="btn badge-dark" style="background-color:rgb(216, 179, 179)">
                         <a  class="text-muted" href="{{ url_for('user.user_account', id=current_user.id) }}" style="text-decoration:none;">{{ current_user.name }}</a>
                         <span class="badge badge-light"><a href="{{ url_for('message.messages') }}">Сообщения</a></span>

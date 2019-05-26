@@ -2,7 +2,7 @@ import os
 
 from flask import Blueprint, render_template, redirect, url_for, \
     request, current_app, flash, jsonify
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 from webapp.market.models import Auto, Params, Images, Auto_brand,\
     Auto_models
@@ -115,6 +115,7 @@ def registration():
 
 
 @blueprint.route('/auto/add_auto')
+@login_required
 def add_auto():
     page_title = 'Разместить объявление на сайте - Не бита, не крашена!'
     form = LoginForm()
@@ -192,6 +193,7 @@ def brand(id):
 
 
 @blueprint.route('/process_add', methods=['POST'])
+@login_required
 def process_add():
     addform = AddForm()
     brand = Auto_brand.query.filter_by(id=addform.brand.data).first()

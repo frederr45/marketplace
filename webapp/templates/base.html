@@ -24,11 +24,11 @@
           {% endblock account %}
           {% block auto_content %}
           {% endblock auto_content %}
+          {% block content %}
+    
+          {% endblock content %}
           <div class="col-2"></div>
           <div class="col-10">
-            {% block content %}
-      
-            {% endblock content %}
             {% if next_url or prev_url %}
             <nav aria-label="Page navigation example">
               <ul class="pagination justify-content-end">
@@ -61,7 +61,10 @@
       </div>
     </main>
     <footer style="background-color : rgb(236, 225, 240)">
-      {% include 'market/footer.html' %}
+        <div class="container" style="min-width:1200px">
+          {% include 'market/footer.html' %}
+        </div>
+      
     </footer>
 
 
