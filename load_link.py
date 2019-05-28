@@ -308,7 +308,7 @@ def download_to_db():
 
 
 if __name__ == "__main__":
-    # get_links_from_pages()
-    # get_link_info()
-    # download_to_csv()
+    get_links_from_pages()
+    get_link_info()
+    download_to_csv()
     download_to_db()
